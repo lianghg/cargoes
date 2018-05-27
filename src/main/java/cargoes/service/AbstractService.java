@@ -18,10 +18,6 @@ public interface AbstractService <E,T> {
 
     int insertSelective(E record);
 
-    List<E> selectByExample(T example);
-
-    E selectByPrimaryKey(String id);
-
     int updateByExampleSelective(E record, T example);
 
     int updateByExample(E record, T example);
@@ -29,4 +25,8 @@ public interface AbstractService <E,T> {
     int updateByPrimaryKeySelective(E record);
 
     int updateByPrimaryKey(E record);
+    
+    List<E> selectByExample(T example);
+
+    E selectByPrimaryKey(String id);
 }

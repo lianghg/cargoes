@@ -9,9 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.Page;
@@ -30,7 +32,7 @@ public class DepartmentController {
 	@GetMapping(value="/{id}")
 	public ResponseEntity<Department> getDepartment(@PathVariable(name="id") String id){
 		
-		Department department =  departmentService.selectByPrimaryKey(id);
+		Department department =  null;//departmentService.selectByPrimaryKey(id);
 		
 		return new ResponseEntity<Department>(department,HttpStatus.OK);
 		
@@ -48,7 +50,7 @@ public class DepartmentController {
 	@PutMapping(value="/{id}")
 	public ResponseEntity<String> updateDepartment(@PathVariable(name="id") String id, @RequestBody Department tempDepartment){
 		
-		Department department =  departmentService.selectByPrimaryKey(id);
+		Department department =  null;//departmentService.selectByPrimaryKey(id);
 		BeanUtils.copyProperties(tempDepartment, department, "id");
 		departmentService.updateByPrimaryKeySelective(department);
 		
@@ -56,7 +58,7 @@ public class DepartmentController {
 		
 	}
 	
-	@GetMapping(value="/")
+	@PostMapping(value="/")
 	public ResponseEntity<String> addDepartment(@RequestBody Department record){
 		
 		record.setCreateTime(new Date());
@@ -66,8 +68,10 @@ public class DepartmentController {
 		
 	}
 	
-	@GetMapping(value="/{pageNo}/{pageSize}")
-	public ResponseEntity<PagePlugin<Page<Department>>> listDepartment(@PathVariable(name = "pageNo") int pageNo, @PathVariable(name = "pageSize") int pageSize){
+	@GetMapping(value="/")
+	public ResponseEntity<PagePlugin<Page<Department>>> listDepartment(
+			@RequestParam(name = "page_no", defaultValue = "1") int pageNo,
+			@RequestParam(name = "page_size", defaultValue = "10") int pageSize){
 		
 		Page<Department> page = departmentService.getDepartmentsByPage(pageNo, pageSize);
 		PagePlugin<Page<Department>> pagePlugin = new PagePlugin<Page<Department>>(pageNo, pageSize, page.getTotal(), page);

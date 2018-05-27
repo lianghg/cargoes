@@ -9,15 +9,17 @@
 			connectionURL="jdbc:mysql://localhost:3306/cargoes?characterEncoding=utf-8"
 			userId="root" password="root@123" />
 		<javaModelGenerator targetProject="cargoes" targetPackage="cargoes.model.po" />
-		<javaClientGenerator targetProject="cargoes" targetPackage="cargoes.dao" type="XMLMAPPER" />
+		<!-- <javaClientGenerator targetProject="cargoes" targetPackage="cargoes.dao" type="XMLMAPPER" /> -->
 		<sqlMapGenerator targetProject="cargoes" targetPackage="mapping" />
 
-		<table schema="" tableName="sys_user" domainObjectName="SysUser"
+
+		<table schema="" tableName="sys_operation_log" domainObjectName="OperationLog"
 			enableCountByExample="true" enableUpdateByExample="true"
 			enableDeleteByExample="true" enableSelectByExample="true"
 			selectByExampleQueryId="true">
 		</table>
-		<table schema="" tableName="sys_operation_log" domainObjectName="OperationLog"
+		<!-- 
+		<table schema="" tableName="sys_user" domainObjectName="SysUser"
 			enableCountByExample="true" enableUpdateByExample="true"
 			enableDeleteByExample="true" enableSelectByExample="true"
 			selectByExampleQueryId="true">
@@ -37,6 +39,6 @@
 			enableDeleteByExample="true" enableSelectByExample="true"
 			selectByExampleQueryId="true">
 		</table>
-
+ -->
 	</context>
 </generatorConfiguration>

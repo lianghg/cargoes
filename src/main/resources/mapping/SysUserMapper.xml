@@ -100,7 +100,7 @@
       This element was generated on Mon May 07 23:15:13 CST 2018.
     -->
     id, name, username, gender, phone, email, birthday, status, create_time, 
-    modify_time, role_id, department_id, last_change_password, expired, disabled
+    modify_time, role_id, department_id, last_change_password, expired, disabled,password,salt
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="cargoes.model.po.SysUserExample" >
     <!--
@@ -476,7 +476,7 @@
   
   <select id="loadUserByUsername" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
-    <include refid="Base_Column_List" />, salt, password
+    <include refid="Base_Column_List" />
     from sys_user
     where username = #{username,jdbcType=VARCHAR}
   </select>

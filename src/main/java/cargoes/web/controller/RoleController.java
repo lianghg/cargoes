@@ -9,9 +9,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.github.pagehelper.Page;
@@ -30,7 +32,7 @@ public class RoleController {
 	@GetMapping(value="/{id}")
 	public ResponseEntity<Role> getRole(@PathVariable(name="id") String id){
 		
-		Role role = roleService.selectByPrimaryKey(id);
+		Role role = null;//roleService.selectByPrimaryKey(id);
 		
 		return new ResponseEntity<Role>(role,HttpStatus.OK);
 		
@@ -47,7 +49,7 @@ public class RoleController {
 	@PutMapping(value="/{id}")
 	public ResponseEntity<String> updateRole(@PathVariable(name="id") String id, @RequestBody Role tempRole){
 		
-		Role role = roleService.selectByPrimaryKey(id);
+		Role role = null;//roleService.selectByPrimaryKey(id);
 		BeanUtils.copyProperties(tempRole, role, "id");
 		roleService.updateByPrimaryKeySelective(role);
 		
@@ -55,7 +57,7 @@ public class RoleController {
 		
 	}
 	
-	@GetMapping(value="/")
+	@PostMapping(value="/")
 	public ResponseEntity<String> addRole(@RequestBody Role record){
 		
 		record.setCreateTime(new Date());
@@ -65,8 +67,10 @@ public class RoleController {
 		
 	}
 	
-	@GetMapping(value="/{pageNo}/{pageSize}")
-	public ResponseEntity<PagePlugin<Page<Role>>> listRole(@PathVariable(name = "pageNo") int pageNo, @PathVariable(name = "pageSize") int pageSize){
+	@GetMapping(value="/")
+	public ResponseEntity<PagePlugin<Page<Role>>> listRole(
+			@RequestParam(name = "page_no", defaultValue = "1") int pageNo,
+			@RequestParam(name = "page_size", defaultValue = "10") int pageSize){
 		
 		Page<Role> page = roleService.getRolesByPage(pageNo, pageSize);
 		PagePlugin<Page<Role>> pagePlugin = new PagePlugin<Page<Role>>(pageNo, pageSize, page.getTotal(), page);

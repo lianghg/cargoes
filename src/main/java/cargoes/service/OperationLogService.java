@@ -1,5 +1,6 @@
 package cargoes.service;
 
+
 import cargoes.model.po.OperationLog;
 import cargoes.model.po.OperationLogExample;
 
