@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.HandlerMethod;
@@ -42,6 +43,15 @@ public class GlobalExceptionHandler {
 		dataEntity.setStatus(HttpStatus.NOT_FOUND.value());
 		
 		return new ResponseEntity<DefaultDataEntity>(dataEntity, HttpStatus.NOT_FOUND);
+	}
+	
+	@ExceptionHandler(AccessDeniedException.class)
+	public ResponseEntity<DefaultDataEntity> showAccessDenied(HttpServletResponse response, Exception ex, HandlerMethod handlerMethod) {
+
+		DefaultDataEntity dataEntity = buildDataEntity(ex);
+		dataEntity.setStatus(HttpStatus.FORBIDDEN.value());
+		
+		return new ResponseEntity<DefaultDataEntity>(dataEntity, HttpStatus.FORBIDDEN);
 	}
 	
 	@ExceptionHandler(Exception.class)

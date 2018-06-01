@@ -1,6 +1,7 @@
 package cargoes.web.controller;
 
 import java.util.Date;
+import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +62,7 @@ public class RoleController {
 	public ResponseEntity<String> addRole(@RequestBody Role record){
 		
 		record.setCreateTime(new Date());
+		record.setId(UUID.randomUUID().toString());
 		roleService.insertSelective(record);
 		
 		return new ResponseEntity<String>("success",HttpStatus.CREATED);

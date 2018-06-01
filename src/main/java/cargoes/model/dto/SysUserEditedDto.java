@@ -29,9 +29,6 @@ public class SysUserEditedDto {
 	@ApiModelProperty(value = "出生日期", dataType = "date", example = "1970-01-01")
 	private Date birthday;
 
-	@ApiModelProperty(value = "角色ID", dataType = "string")
-	private String roleId;
-
 	@ApiModelProperty(value = "部门ID", dataType = "string")
 	private String departmentId;
 
@@ -98,14 +95,6 @@ public class SysUserEditedDto {
 
 	public void setBirthday(Date birthday) {
 		this.birthday = birthday;
-	}
-
-	public String getRoleId() {
-		return roleId;
-	}
-
-	public void setRoleId(String roleId) {
-		this.roleId = roleId;
 	}
 
 	public String getDepartmentId() {

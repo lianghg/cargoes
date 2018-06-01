@@ -1,5 +1,7 @@
 package cargoes.service.impl;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.Page;
@@ -8,8 +10,10 @@ import com.github.pagehelper.PageHelper;
 import cargoes.model.po.SysUser;
 import cargoes.model.po.SysUserExample;
 import cargoes.service.UserService;
+import cargoes.web.configuration.i18n.MessageSourceUtils;
 import cargoes.web.exception.ResourceNotFound;
 import cargoes.web.exception.UserActivationException;
+import cargoes.web.security.PasswordUtil;
 
 @Service
 public class UserServiceImpl extends AbstractServiceImpl<SysUser, SysUserExample> implements UserService {
@@ -37,19 +41,22 @@ public class UserServiceImpl extends AbstractServiceImpl<SysUser, SysUserExample
 		SysUser user = this.getMapper().selectByPrimaryKey(id);
 		
 		if (user == null) {
-			throw new ResourceNotFound("用户资源不存在");
+			throw new ResourceNotFound(MessageSourceUtils.getMessage("error.user.not-found"));
 		}
 		if(user.getStatus() != null && 1 == user.getStatus()){
-			throw new UserActivationException("用户已激活");
+			throw new UserActivationException(MessageSourceUtils.getMessage("error.user.actied"));//"用户已激活"
 		}
 		if (password == null || !password.equals(comfirmPassword)) {
-			throw new IllegalArgumentException("密码不一致");
+			throw new IllegalArgumentException(MessageSourceUtils.getMessage("error.user.password.not-same"));//"密码不一致"
 		}
+		String salt = "$@|t."+UUID.randomUUID().toString();
 		
-		user.setPassword(password);
-		user.setExpired(0);
+		user.setPassword(PasswordUtil.md5PasswordEncoder(password, salt));
+		user.setSalt(salt);
 		user.setStatus(1);
-		user.setDisabled(0);
+		user.setExpired(0);
+		user.setLocked(0);
+		user.setCredentialsExpired(0);
 
 		return this.getMapper().updateByPrimaryKey(user);
 	}

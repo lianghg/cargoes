@@ -19,6 +19,8 @@ import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.context.annotation.Configuration;
 
+import cargoes.web.configuration.i18n.MessageSourceUtils;
+
 @Aspect
 @Configuration
 public class ParamValidAspect {
@@ -47,7 +49,7 @@ public class ParamValidAspect {
         Iterator<ConstraintViolation<Object>> violationIterator = validResult.iterator();
         while (violationIterator.hasNext()) {
         	String msg = violationIterator.next().getMessage();
-            errorMsg.add(msg);
+            errorMsg.add(MessageSourceUtils.getMessage(msg));//
         }
 
         for (Object bean : args) {
@@ -56,7 +58,7 @@ public class ParamValidAspect {
                 violationIterator = validResult.iterator();
                 while (violationIterator.hasNext()) {
                 	String msg = violationIterator.next().getMessage();
-                    errorMsg.add(msg);
+                    errorMsg.add(MessageSourceUtils.getMessage(msg));//
                 }
             }
         }

@@ -13,6 +13,8 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -40,7 +42,7 @@ public class OperationLogHandler {
 	@Pointcut("within(cargoes.web.controller..*) && @annotation(cargoes.annotation.Operation)") //
 	public void logPointcut() {
 	}
-
+	
 	// 记录日志
 	@Around("logPointcut()")
 	public Object aroundAdvice(ProceedingJoinPoint point) throws Throwable {
@@ -50,9 +52,11 @@ public class OperationLogHandler {
 		int operationStatus = OperationLog.OPERATION_STATUS_SUCCESS;
 		
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
 		Object [] args = point.getArgs();
 		
+		String requestInfo = args == null ? "" : JSON.toJSONString(args);
 		String ip = request.getRemoteAddr();
 		String optionType = checkOperation(point);
 		String url = request.getRequestURL().toString();
@@ -60,15 +64,15 @@ public class OperationLogHandler {
 		String invokedMethod = "";
 		invokedMethod += point.getSignature().getDeclaringTypeName();//
 		invokedMethod += "." + point.getSignature().getName();//
-		String requestInfo = "";
-		
-		if(args!= null){
-			requestInfo = JSON.toJSONString(args);
+		String username = "";
+		if(principal instanceof UserDetails){
+			username = ((UserDetails)principal).getUsername();
+		}else{
+			username = (String)principal;
 		}
 		
 		OperationLog operationLog = new OperationLog();
-		operationLog.setId(UUID.randomUUID().toString());
-		operationLog.setUserId("");
+		operationLog.setUserId(username);
 		operationLog.setIp(ip);
 		operationLog.setRequestType(requestType);
 		operationLog.setOperationDesc(optionType);

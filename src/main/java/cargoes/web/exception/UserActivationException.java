@@ -19,7 +19,8 @@ public class UserActivationException extends RuntimeException {
 		this.message = message;
 	}
 
-	public UserActivationException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+	public UserActivationException(String message, Throwable cause, boolean enableSuppression,
+			boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
 		this.message = message;
 	}
