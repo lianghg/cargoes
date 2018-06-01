@@ -23,14 +23,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.pagehelper.Page;
 
 import cargoes.annotation.Operation;
+import cargoes.exception.ResourceNotFound;
 import cargoes.model.dto.SysUserAddDto;
 import cargoes.model.dto.SysUserEditedDto;
 import cargoes.model.dto.SysUserInfoDto;
 import cargoes.model.po.SysUser;
 import cargoes.plugin.paging.PagePlugin;
 import cargoes.service.UserService;
-import cargoes.web.configuration.i18n.MessageSourceUtils;
-import cargoes.web.exception.ResourceNotFound;
+import cargoes.util.MessageSourceUtils;
 import cargoes.web.response.model.DefaultDataEntity;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;

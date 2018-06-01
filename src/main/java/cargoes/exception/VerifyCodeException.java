@@ -1,4 +1,4 @@
-package cargoes.web.exception;
+package cargoes.exception;
 
 import org.springframework.security.core.AuthenticationException;
 

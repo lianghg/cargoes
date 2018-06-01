@@ -1,8 +1,8 @@
-package cargoes.web.aop.operationLogHandler;
+package cargoes.aop.operationLogHandler;
 
 import java.lang.reflect.Method;
 import java.util.Date;
-import java.util.UUID;
+import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -24,6 +24,7 @@ import com.alibaba.fastjson.JSON;
 import cargoes.annotation.Operation;
 import cargoes.model.po.OperationLog;
 import cargoes.service.OperationLogService;
+import cargoes.util.MessageSourceUtils;
 
 /*
  * 前置通知（@Before）：在某连接点（join point）之前执行的通知，但这个通知不能阻止连接点前的执行（除非它抛出一个异常）
@@ -87,7 +88,7 @@ public class OperationLogHandler {
 
 		} catch (Throwable e) {
 			operationStatus = OperationLog.OPERATION_STATUS_FAIL;
-			operationLog.setErrorMessage(e.toString());
+			operationLog.setErrorMessage(e.getClass().getName()+":"+MessageSourceUtils.analyseMsg(e.getMessage(),Locale.SIMPLIFIED_CHINESE));
 			throw e;
 		}finally{
 			int consumedTime = 0;
@@ -127,5 +128,7 @@ public class OperationLogHandler {
 		return optionValue;
 
 	}
+	
+	
 
 }

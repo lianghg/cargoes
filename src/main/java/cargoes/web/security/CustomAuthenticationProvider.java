@@ -13,10 +13,10 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import cargoes.exception.VerifyCodeException;
 import cargoes.model.po.SysUser;
-import cargoes.web.configuration.i18n.MessageSourceUtils;
+import cargoes.util.MessageSourceUtils;
 import cargoes.web.configuration.mvc.MvcConfiguration;
-import cargoes.web.exception.VerifyCodeException;
 
 @Component
 public class CustomAuthenticationProvider implements AuthenticationProvider {

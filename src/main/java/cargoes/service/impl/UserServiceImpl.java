@@ -7,12 +7,12 @@ import org.springframework.stereotype.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 
+import cargoes.exception.ResourceNotFound;
+import cargoes.exception.UserActivationException;
 import cargoes.model.po.SysUser;
 import cargoes.model.po.SysUserExample;
 import cargoes.service.UserService;
-import cargoes.web.configuration.i18n.MessageSourceUtils;
-import cargoes.web.exception.ResourceNotFound;
-import cargoes.web.exception.UserActivationException;
+import cargoes.util.MessageSourceUtils;
 import cargoes.web.security.PasswordUtil;
 
 @Service

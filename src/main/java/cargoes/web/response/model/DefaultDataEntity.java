@@ -1,7 +1,6 @@
 package cargoes.web.response.model;
 
 import java.util.Date;
-import java.util.Map;
 
 public class DefaultDataEntity extends DataEntity{
 

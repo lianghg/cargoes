@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import cargoes.dao.SysUserMapper;
 import cargoes.model.po.SysUser;
-import cargoes.web.configuration.i18n.MessageSourceUtils;
+import cargoes.util.MessageSourceUtils;
 
 @Service
 public class AuthenticationService implements UserDetailsService {

@@ -1,25 +1,26 @@
-package cargoes.web.exception;
+package cargoes.exception;
 
 @SuppressWarnings("serial")
-public class ResourceNotFound extends RuntimeException {
+public class UserActivationException extends RuntimeException {
 
 	private String message;
 
-	public ResourceNotFound() {
+	public UserActivationException() {
 		super();
 	}
 
-	public ResourceNotFound(String message) {
+	public UserActivationException(String message) {
 		super(message);
 		this.message = message;
 	}
 
-	public ResourceNotFound(String message, Throwable cause) {
+	public UserActivationException(String message, Throwable cause) {
 		super(message, cause);
 		this.message = message;
 	}
 
-	public ResourceNotFound(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
+	public UserActivationException(String message, Throwable cause, boolean enableSuppression,
+			boolean writableStackTrace) {
 		super(message, cause, enableSuppression, writableStackTrace);
 		this.message = message;
 	}

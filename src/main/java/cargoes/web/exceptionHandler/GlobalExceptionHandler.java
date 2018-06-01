@@ -1,4 +1,4 @@
-package cargoes.web.aop.exceptionHandler;
+package cargoes.web.exceptionHandler;
 
 import java.util.Date;
 
@@ -7,12 +7,14 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.HandlerMethod;
 
-import cargoes.web.exception.ResourceNotFound;
-import cargoes.web.exception.UserActivationException;
+import cargoes.exception.ResourceNotFound;
+import cargoes.exception.UserActivationException;
+import cargoes.util.MessageSourceUtils;
 import cargoes.web.response.model.DefaultDataEntity;
 
 @ControllerAdvice
@@ -66,7 +68,7 @@ public class GlobalExceptionHandler {
 	private DefaultDataEntity buildDataEntity(Exception ex) {
 		DefaultDataEntity dataEntity = new DefaultDataEntity();
 		dataEntity.setFlag(false);
-		dataEntity.setMessage(ex.getMessage());
+		dataEntity.setMessage(MessageSourceUtils.analyseMsg(ex.getMessage()));
 		dataEntity.setTimestamp(new Date());
 		dataEntity.setException(ex.getClass().getName());
 		return dataEntity;

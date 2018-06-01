@@ -1,4 +1,4 @@
-package cargoes.web.configuration.kaptcha;
+package cargoes.kaptcha;
 
 import java.awt.Color;
 import java.util.Properties;
