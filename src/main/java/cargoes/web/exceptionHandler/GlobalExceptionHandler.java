@@ -14,8 +14,8 @@ import org.springframework.web.method.HandlerMethod;
 
 import cargoes.exception.ResourceNotFound;
 import cargoes.exception.UserActivationException;
+import cargoes.model.vo.DefaultDataEntity;
 import cargoes.util.MessageSourceUtils;
-import cargoes.web.response.model.DefaultDataEntity;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {

@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 import cargoes.model.po.OperationLog;
 import cargoes.service.OperationLogService;
-import cargoes.web.configuration.mvc.MvcConfiguration;
+import cargoes.web.mvc.MvcConfiguration;
 
 @Component
 public class CustomAuthenticationSuccessHandler implements AuthenticationSuccessHandler{
@@ -36,7 +36,7 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 		String username = request.getParameter("username");
 		
 		OperationLog operationLog = new OperationLog();
-		operationLog.setUserId(username);
+		operationLog.setUsername(username);
 		operationLog.setIp(ip);
 		operationLog.setRequestType(requestType);
 		operationLog.setOperationDesc("登录认证");

@@ -7,7 +7,7 @@ import org.springframework.security.web.authentication.WebAuthenticationDetails;
 
 import com.google.code.kaptcha.Constants;
 
-import cargoes.web.configuration.mvc.MvcConfiguration;
+import cargoes.web.mvc.MvcConfiguration;
 
 @SuppressWarnings("serial")
 public class CustomWebAuthenticationDetails extends WebAuthenticationDetails {

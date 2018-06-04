@@ -1,4 +1,4 @@
-package cargoes.web.configuration.mvc;
+package cargoes.web.mvc;
 
 import java.util.ArrayList;
 import java.util.List;

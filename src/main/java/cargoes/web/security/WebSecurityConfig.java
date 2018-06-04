@@ -12,7 +12,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.session.SimpleRedirectInvalidSessionStrategy;
 
-import cargoes.web.configuration.mvc.MvcConfiguration;
+import cargoes.web.mvc.MvcConfiguration;
 
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)

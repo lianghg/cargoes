@@ -73,7 +73,7 @@ public class OperationLogHandler {
 		}
 		
 		OperationLog operationLog = new OperationLog();
-		operationLog.setUserId(username);
+		operationLog.setUsername(username);
 		operationLog.setIp(ip);
 		operationLog.setRequestType(requestType);
 		operationLog.setOperationDesc(optionType);

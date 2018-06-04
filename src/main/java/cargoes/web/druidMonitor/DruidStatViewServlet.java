@@ -1,4 +1,4 @@
-package cargoes.web.configuration.druidMonitor;
+package cargoes.web.druidMonitor;
 
 import javax.servlet.annotation.WebInitParam;
 import javax.servlet.annotation.WebServlet;

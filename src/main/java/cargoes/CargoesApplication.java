@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 @SpringBootApplication
 @MapperScan("cargoes.**.dao")
 @EnableTransactionManagement
-@ServletComponentScan("cargoes.web.configuration.druidMonitor")
+@ServletComponentScan("cargoes.web.druidMonitor")
 @EnableRedisHttpSession(maxInactiveIntervalInSeconds=60)//
 public class CargoesApplication {
 

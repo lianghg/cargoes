@@ -14,7 +14,7 @@ import org.springframework.security.web.WebAttributes;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.stereotype.Component;
 
-import cargoes.web.configuration.mvc.MvcConfiguration;
+import cargoes.web.mvc.MvcConfiguration;
 
 
 @Component

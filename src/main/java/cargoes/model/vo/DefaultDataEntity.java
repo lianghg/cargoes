@@ -1,4 +1,4 @@
-package cargoes.web.response.model;
+package cargoes.model.vo;
 
 import java.util.Date;
 
