@@ -1,28 +1,31 @@
 package cargoes.service.impl;
 
-import java.util.UUID;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 
+import cargoes.dao.SysUserMapper;
 import cargoes.model.po.SysUser;
-import cargoes.model.po.SysUserExample;
 import cargoes.service.UserService;
-import cargoes.web.configuration.i18n.MessageSourceUtils;
-import cargoes.web.exception.ResourceNotFound;
-import cargoes.web.exception.UserActivationException;
-import cargoes.web.security.PasswordUtil;
 
 @Service
-public class UserServiceImpl extends AbstractServiceImpl<SysUser, SysUserExample> implements UserService {
+public class UserServiceImpl extends AbstractServiceImpl<SysUser> implements UserService {
 
+	@Autowired
+	private SysUserMapper sysUserMapper;
+	
+	@Override
+	public SysUserMapper getMapper() {
+		return sysUserMapper;
+	}
+	
 	@Override
 	public Page<SysUser> getUsersByPage(int pageNo, int pageSize) {
 
 		Page<SysUser> page = PageHelper.startPage(pageNo, pageSize);
-		this.getMapper().selectByExample(null);
+		this.getMapper().selectList();
 
 		return page;
 	}
@@ -38,27 +41,8 @@ public class UserServiceImpl extends AbstractServiceImpl<SysUser, SysUserExample
 	@Override
 	public int activateUser(String id, String password, String comfirmPassword){
 
-		SysUser user = this.getMapper().selectByPrimaryKey(id);
-		
-		if (user == null) {
-			throw new ResourceNotFound(MessageSourceUtils.getMessage("error.user.not-found"));
-		}
-		if(user.getStatus() != null && 1 == user.getStatus()){
-			throw new UserActivationException(MessageSourceUtils.getMessage("error.user.actied"));//"用户已激活"
-		}
-		if (password == null || !password.equals(comfirmPassword)) {
-			throw new IllegalArgumentException(MessageSourceUtils.getMessage("error.user.password.not-same"));//"密码不一致"
-		}
-		String salt = "$@|t."+UUID.randomUUID().toString();
-		
-		user.setPassword(PasswordUtil.md5PasswordEncoder(password, salt));
-		user.setSalt(salt);
-		user.setStatus(1);
-		user.setExpired(0);
-		user.setLocked(0);
-		user.setCredentialsExpired(0);
-
-		return this.getMapper().updateByPrimaryKey(user);
+		return 0;
 	}
+
 
 }

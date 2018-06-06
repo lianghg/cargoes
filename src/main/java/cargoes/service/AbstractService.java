@@ -4,13 +4,9 @@ import java.util.List;
 
 import cargoes.dao.AbstractMapper;
 
-public interface AbstractService <E,T> {
+public interface AbstractService <E> {
 	
-	AbstractMapper<E, T> getMapper();
-
-    int countByExample(T example);
-
-    int deleteByExample(T example);
+	AbstractMapper<E> getMapper();
 
     int deleteByPrimaryKey(String id);
 
@@ -18,15 +14,11 @@ public interface AbstractService <E,T> {
 
     int insertSelective(E record);
 
-    int updateByExampleSelective(E record, T example);
-
-    int updateByExample(E record, T example);
-
     int updateByPrimaryKeySelective(E record);
 
     int updateByPrimaryKey(E record);
     
-    List<E> selectByExample(T example);
-
     E selectByPrimaryKey(String id);
+    
+    List<E> selectByPrimaryKeys(List<String> ids);
 }

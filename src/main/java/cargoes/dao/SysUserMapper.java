@@ -1,9 +1,10 @@
 package cargoes.dao;
 
+import java.util.List;
+
 import cargoes.model.po.SysUser;
-import cargoes.model.po.SysUserExample;
 
-public interface SysUserMapper extends AbstractMapper<SysUser,SysUserExample>{
+public interface SysUserMapper extends AbstractMapper<SysUser>{
 
-	SysUser loadUserByUsername(String username);
+	List<SysUser> selectList();
 }
