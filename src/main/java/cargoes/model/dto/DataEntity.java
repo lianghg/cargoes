@@ -1,4 +1,4 @@
-package cargoes.model.vo;
+package cargoes.model.dto;
 
 import java.util.Date;
 
