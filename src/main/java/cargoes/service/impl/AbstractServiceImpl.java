@@ -2,7 +2,6 @@ package cargoes.service.impl;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import cargoes.dao.AbstractMapper;
@@ -54,6 +53,14 @@ public abstract class AbstractServiceImpl<E> implements AbstractService<E>{
 		
 		return getMapper().selectByPrimaryKeys(ids);
 	}
+
+	@Override
+	public int deleteByPrimaryKeys(List<String> ids) {
+		
+		return getMapper().deleteByPrimaryKeys(ids);
+	}
+	
+	
 
 	
 }

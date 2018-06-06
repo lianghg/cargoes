@@ -11,4 +11,6 @@ public interface UserService extends AbstractService<SysUser>{
 
 	public int activateUser(String id, String password, String comfirmPassword);
 	
+	SysUser loadUserByUsername(String username);
+	
 }

@@ -6,8 +6,6 @@ import org.apache.ibatis.annotations.Param;
 
 public interface AbstractMapper<E> {
 
-	int deleteByPrimaryKey(String id);
-
 	int insert(E record);
 
 	int insertSelective(E record);
@@ -15,6 +13,10 @@ public interface AbstractMapper<E> {
 	int updateByPrimaryKeySelective(E record);
 
 	int updateByPrimaryKey(E record);
+	
+	int deleteByPrimaryKey(String id);
+	
+	int deleteByPrimaryKeys(@Param("ids") List<String> ids);
 
 	E selectByPrimaryKey(String id);
 

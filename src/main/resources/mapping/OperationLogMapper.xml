@@ -215,4 +215,35 @@
 		error_message = #{errorMessage,jdbcType=VARCHAR}
 		where id = #{id,jdbcType=VARCHAR}
 	</update>
+	
+	<!-- -->
+	<select id="selectByPrimaryKeys" resultMap="BaseResultMap"
+		parameterType="java.util.List">
+		select
+		<include refid="Base_Column_List" />
+		from sys_operation_log
+		where 
+		<if test="ids != null and ids.size > 0">
+			<foreach collection="ids" item="id" open="id in(" close=")" separator=",">
+				#{id,jdbcType=VARCHAR}
+			</foreach>
+		</if>
+		<if test="ids == null or ids.size == 0">
+			id is null
+		</if>
+	</select>
+
+	<!--  -->
+	<delete id="deleteByPrimaryKeys" parameterType="java.util.List">
+		delete from sys_operation_log
+		where 
+		<if test="ids != null and ids.size > 0">
+			<foreach collection="ids" item="id" open="id in(" close=")" separator=",">
+				#{id,jdbcType=VARCHAR}
+			</foreach>
+		</if>
+		<if test="ids == null or ids.size == 0">
+			id is null
+		</if>
+	</delete>
 </mapper>

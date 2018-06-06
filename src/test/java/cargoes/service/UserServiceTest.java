@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -20,6 +19,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
 
+import cargoes.model.po.Department;
+import cargoes.model.po.Role;
 import cargoes.model.po.SysUser;
 
 @RunWith(SpringRunner.class)
@@ -31,15 +32,30 @@ public class UserServiceTest {
 	private UserService userService;
 	
 	public static SysUser user;
+	
+	public static Department department;
+	
+	public static List<Role> roles;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
+		roles = new ArrayList<Role>();
+		
+		Role r1 = new Role();
+		Role r2 = new Role();
+		r1.setId("8a76732dabcb4d428ff16a6b740775a4");
+		r2.setId("9a76732dabcb4d428ff16a6b740775a4");
+		roles.add(r1);
+		roles.add(r2);
+		
+		department = new Department();
+		department.setId("6ab2d31a689e11e8b7ed107b44f33502");
+		
 		user = new SysUser();
 		user.setCreateTime(new Date());
 		user.setBirthday(new Date());
 		user.setUsername("userService");
 		user.setName("user");
-		user.setDepartmentId("1234");
 		user.setEmail("ttest6@cargoes.com");
 		user.setGender(2);
 		user.setPassword("123456");
@@ -49,6 +65,8 @@ public class UserServiceTest {
 		user.setLocked(0);
 		user.setCredentialsExpired(0);
 		user.setStatus(0);
+		user.setDepartment(department);
+		user.setRoles(roles);
 	}
 	
 	@Test
@@ -89,14 +107,15 @@ public class UserServiceTest {
 
 	@Test
 	public void test006SelectByPrimaryKey() {
-		SysUser u = userService.selectByPrimaryKey(user.getId());
+		SysUser u = userService.selectByPrimaryKey("1");
 		assertNotNull(u);
+		System.out.println(JSON.toJSONStringWithDateFormat(u, "yyyy-MM-dd HH:mm:ss"));
 	}
 
 	@Test
 	public void test007SelectByPrimaryKeys() {
 		
-		List<String> ids = new ArrayList<String>();
+		List<String> ids = new ArrayList<String>(); 
 		
 		ids.add("1");
 		ids.add("2");
@@ -125,6 +144,17 @@ public class UserServiceTest {
 		user.setStatus(1);
 		int i = userService.updateByPrimaryKey(user);
 		assertEquals(1, i);
+	}
+	
+	@Test
+	public void test010DeleteByPrimaryKeys() {
+		
+		List<String> ids = new ArrayList<String>();
+		
+		ids.add("a59766ac695c11e8b7ed107b44f33502");
+		ids.add("907aaf33695c11e8b7ed107b44f33502");
+		int i = userService.deleteByPrimaryKeys(null);
+		assertEquals(0, i);
 	}
 
 }

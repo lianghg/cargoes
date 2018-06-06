@@ -44,5 +44,11 @@ public class UserServiceImpl extends AbstractServiceImpl<SysUser> implements Use
 		return 0;
 	}
 
+	@Override
+	public SysUser loadUserByUsername(String username) {
+		
+		return this.getMapper().loadUserByUsername(username);
+	}
+
 
 }
