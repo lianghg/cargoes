@@ -6,6 +6,12 @@ import java.util.List;
 
 public class Role {
 	
+	/** 禁用 **/
+	public static Integer ROLE_DISABLED = 0;
+	
+	/** 启用 **/
+	public static Integer ROLE_ENABLED = 1;
+	
 	private List<Authority> authorities = new ArrayList<Authority>(0);
 	
     private String id;
@@ -15,6 +21,8 @@ public class Role {
     private String name;
 
     private String description;
+    
+    private Integer status;
 
     private Integer order;
 
@@ -60,6 +68,14 @@ public class Role {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 	public Integer getOrder() {

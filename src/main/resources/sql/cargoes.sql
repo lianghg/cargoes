@@ -34,7 +34,7 @@ CREATE TABLE `sys_authority` (
 
 /*Data for the table `sys_authority` */
 
-insert  into `sys_authority`(`id`,`code`,`name`,`description`,`parent_id`,`order`,`create_time`,`modify_time`) values ('0c692054689611e8b7ed107y44f33502','AUTH_SLT_USER_BY_ID','查询用户','根据ID查询用户',NULL,999,'2018-01-29 17:48:22',NULL);
+insert  into `sys_authority`(`id`,`code`,`name`,`description`,`parent_id`,`order`,`create_time`,`modify_time`) values ('0c692054689611e8b7ed107y44f33502','AUTH_SLT_USER_BY_ID','查询用户','根据ID查询用户',NULL,999,NULL,NULL);
 
 /*Table structure for table `sys_department` */
 
@@ -47,7 +47,7 @@ CREATE TABLE `sys_department` (
   `description` varchar(500) DEFAULT NULL,
   `parent_id` varchar(128) DEFAULT NULL,
   `order` int(11) DEFAULT '999',
-  `create_time` datetime NOT NULL,
+  `create_time` datetime DEFAULT NULL,
   `modify_time` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `parent_fk` (`parent_id`),
@@ -56,7 +56,7 @@ CREATE TABLE `sys_department` (
 
 /*Data for the table `sys_department` */
 
-insert  into `sys_department`(`id`,`code`,`name`,`description`,`parent_id`,`order`,`create_time`,`modify_time`) values ('0c692054689611e8b7ed107b44f33502','100200','开发部','string','2ab2d31a689e11e8b7ed107b44f33502',999,'2018-02-05 15:57:10',NULL),('215969a8689e11e8b7ed107b44f33502','100100','测试部','string','2ab2d31a689e11e8b7ed107b44f33502',999,'2018-02-05 16:55:01',NULL),('2ab2d31a689e11e8b7ed107b44f33502','100','软件部','string',NULL,999,'2018-02-28 16:55:17',NULL),('6ab2d31a689e11e8b7ed107b44f33502','100202','开发2组',NULL,'0c692054689611e8b7ed107b44f33502',999,'2018-02-05 16:55:17',NULL),('7ab2d31a689e11e8b7ed107b44f33502','100201','开发1组',NULL,'0c692054689611e8b7ed107b44f33502',999,'2018-02-05 16:55:17',NULL);
+insert  into `sys_department`(`id`,`code`,`name`,`description`,`parent_id`,`order`,`create_time`,`modify_time`) values ('0c692054689611e8b7ed107b44f33502','100200','开发部','string','2ab2d31a689e11e8b7ed107b44f33502',999,NULL,NULL),('215969a8689e11e8b7ed107b44f33502','100100','测试部','string','2ab2d31a689e11e8b7ed107b44f33502',999,NULL,NULL),('2ab2d31a689e11e8b7ed107b44f33502','100','软件部','string',NULL,999,NULL,NULL),('6ab2d31a689e11e8b7ed107b44f33502','100202','开发2组','string','0c692054689611e8b7ed107b44f33502',999,NULL,NULL),('7ab2d31a689e11e8b7ed107b44f33502','100201','开发1组','string','0c692054689611e8b7ed107b44f33502',999,NULL,NULL);
 
 /*Table structure for table `sys_operation_log` */
 
@@ -92,12 +92,13 @@ CREATE TABLE `sys_role` (
   `order` int(11) DEFAULT '999',
   `create_time` datetime DEFAULT NULL,
   `modify_time` datetime DEFAULT NULL,
+  `status` int(1) DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 /*Data for the table `sys_role` */
 
-insert  into `sys_role`(`id`,`code`,`name`,`description`,`order`,`create_time`,`modify_time`) values ('8a76732dabcb4d428ff16a6b740775a4','ROLE_ADMIN','管理员',NULL,999,'2018-02-28 17:44:53',NULL),('9a76732dabcb4d428ff16a6b740775a4','ROLE_USER','普通用户',NULL,999,'2018-02-25 10:34:51',NULL);
+insert  into `sys_role`(`id`,`code`,`name`,`description`,`order`,`create_time`,`modify_time`,`status`) values ('8a76732dabcb4d428ff16a6b740775a4','ROLE_ADMIN','管理员',NULL,999,NULL,NULL,0),('9a76732dabcb4d428ff16a6b740775a4','ROLE_USER','普通用户',NULL,999,NULL,NULL,0);
 
 /*Table structure for table `sys_role_authority` */
 

@@ -43,11 +43,8 @@
   </resultMap>
   
 	<sql id="Base_Column_List">
-	`id`, `name`, `username`, `password`, `gender`, `phone`, `email`,
-	`birthday`,
-	`department_id`, `create_time`,
-	`modify_time`, `salt`, l`ast_change_password`, `status`, `expired`, `locked`,
-	`credentials_expired`
+	`id`, `name`, `username`, `password`, `gender`, `phone`, `email`, `birthday`, `department_id`, `create_time`, 
+	`modify_time`, `salt`, `last_change_password`, `status`, `expired`, `locked`, `credentials_expired`
 	</sql>
 	<select id="selectByPrimaryKey" resultMap="AuthoritiesResultMap"
 		parameterType="java.lang.String">
@@ -112,27 +109,43 @@
 	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
 		delete from sys_user
-		where id = #{id,jdbcType=VARCHAR}
+			where id = #{id,jdbcType=VARCHAR};
+		
+		delete from sys_user_role
+		    where user_id = #{id,jdbcType=VARCHAR};
 	</delete>
 	<insert id="insert" parameterType="cargoes.model.po.SysUser">
 		<selectKey keyProperty="id" resultType="String" order="BEFORE">
 			select replace(uuid(),'-','') from dual
 		</selectKey>
-		insert into sys_user (id, name, username,
-		password, gender, phone,
-		email, birthday, department_id,
-		create_time, modify_time, salt,
-		last_change_password, status, expired,
-		locked, credentials_expired)
-		values (#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
-		#{username,jdbcType=VARCHAR},
-		#{password,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}, #{phone,jdbcType=CHAR},
-		#{email,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE},
-		#{department.id,jdbcType=VARCHAR},
-		#{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, #{salt,jdbcType=VARCHAR},
-		#{lastChangePassword,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER},
-		#{expired,jdbcType=INTEGER},
-		#{locked,jdbcType=INTEGER}, #{credentialsExpired,jdbcType=INTEGER});
+		insert into sys_user (
+			`id`, 
+			`name`, 
+			`username`,
+			`password`, 
+			`gender`, 
+			`phone`,
+			`email`, 
+			`birthday`, 
+			`department_id`,
+			`create_time`, 
+			`modify_time`, 
+			`salt`,
+			`last_change_password`, 
+			`status`, 
+			`expired`,
+			`locked`, 
+			`credentials_expired`)
+		values (
+			#{id,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR},
+			#{username,jdbcType=VARCHAR},
+			#{password,jdbcType=VARCHAR}, #{gender,jdbcType=INTEGER}, #{phone,jdbcType=CHAR},
+			#{email,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE},
+			#{department.id,jdbcType=VARCHAR},
+			#{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP}, #{salt,jdbcType=VARCHAR},
+			#{lastChangePassword,jdbcType=TIMESTAMP}, #{status,jdbcType=INTEGER},
+			#{expired,jdbcType=INTEGER},
+			#{locked,jdbcType=INTEGER}, #{credentialsExpired,jdbcType=INTEGER});
 		
 		<if test="roles != null and roles.size > 0">
 			<foreach collection="roles" item="role">
@@ -268,8 +281,6 @@
 		</if>
 	</insert>
 	<update id="updateByPrimaryKeySelective" parameterType="cargoes.model.po.SysUser">
-		<!--   
-			 -->
 		update sys_user
 		<set>
 			<if test="name != null">
@@ -325,40 +336,46 @@
 		
 	    <if test="roles != null">
 		    delete from sys_user_role
-		    where user_id = #{id,jdbcType=VARCHAR};
+		    	where user_id = #{id,jdbcType=VARCHAR};
 		    <if test="roles.size > 0">
 				<foreach collection="roles" item="role">
-					insert into sys_user_role (id, user_id, role_id)
+					insert into sys_user_role (
+						id, 
+						user_id, 
+						role_id)
 					values (
-					(select replace(uuid(),'-','') from dual),
-					#{id,jdbcType=VARCHAR},
-					#{role.id,jdbcType=VARCHAR});
+						(select replace(uuid(),'-','') from dual),
+						#{id,jdbcType=VARCHAR},
+						#{role.id,jdbcType=VARCHAR});
 				</foreach>
 			</if>
 		</if>
 	</update>
 	<update id="updateByPrimaryKey" parameterType="cargoes.model.po.SysUser">
 		update sys_user
-		set name = #{name,jdbcType=VARCHAR},
-		username = #{username,jdbcType=VARCHAR},
-		password = #{password,jdbcType=VARCHAR},
-		gender = #{gender,jdbcType=INTEGER},
-		phone = #{phone,jdbcType=CHAR},
-		email = #{email,jdbcType=VARCHAR},
-		birthday = #{birthday,jdbcType=DATE},
-		department_id = #{department.id,jdbcType=VARCHAR},
-		create_time = #{createTime,jdbcType=TIMESTAMP},
-		modify_time = #{modifyTime,jdbcType=TIMESTAMP},
-		salt = #{salt,jdbcType=VARCHAR},
-		last_change_password = #{lastChangePassword,jdbcType=TIMESTAMP},
-		status = #{status,jdbcType=INTEGER},
-		expired = #{expired,jdbcType=INTEGER},
-		locked = #{locked,jdbcType=INTEGER},
-		credentials_expired = #{credentialsExpired,jdbcType=INTEGER}
-		where id = #{id,jdbcType=VARCHAR};
+			set 
+				name = #{name,jdbcType=VARCHAR},
+				username = #{username,jdbcType=VARCHAR},
+				password = #{password,jdbcType=VARCHAR},
+				gender = #{gender,jdbcType=INTEGER},
+				phone = #{phone,jdbcType=CHAR},
+				email = #{email,jdbcType=VARCHAR},
+				birthday = #{birthday,jdbcType=DATE},
+				department_id = #{department.id,jdbcType=VARCHAR},
+				create_time = #{createTime,jdbcType=TIMESTAMP},
+				modify_time = #{modifyTime,jdbcType=TIMESTAMP},
+				salt = #{salt,jdbcType=VARCHAR},
+				last_change_password = #{lastChangePassword,jdbcType=TIMESTAMP},
+				status = #{status,jdbcType=INTEGER},
+				expired = #{expired,jdbcType=INTEGER},
+				locked = #{locked,jdbcType=INTEGER},
+				credentials_expired = #{credentialsExpired,jdbcType=INTEGER}
+		where 
+			id = #{id,jdbcType=VARCHAR};
 		
 	    delete from sys_user_role
 		    where user_id = #{id,jdbcType=VARCHAR};
+		    
 		<if test="roles != null and roles.size > 0">
 			<foreach collection="roles" item="role">
 				insert into sys_user_role (id, user_id, role_id)
@@ -388,10 +405,63 @@
 	</select>
 
 	<!-- -->
-	<select id="selectList" resultMap="BaseResultMap">
-		select
-		<include refid="Base_Column_List" />
-		from sys_user
+	<select id="selectList" resultMap="AuthoritiesResultMap">
+		SELECT 
+		  u.id,
+		  u.name,
+		  u.username,
+		  u.gender,
+		  u.phone,
+		  u.email,
+		  u.birthday,
+		  u.status,
+		  u.create_time,
+		  u.modify_time,
+		  u.department_id,
+		  u.last_change_password,
+		  u.expired,
+		  u.locked, 
+		  u.credentials_expired,
+		  u.password,
+		  u.salt,
+		  
+		  r.id AS role_id,
+		  r.code AS role_code,
+		  r.name AS role_name,
+		  r.modify_time AS role_modify_time,
+		  r.create_time AS role_create_time,
+		  r.description AS role_description,
+		  r.order AS role_order,
+		  
+		  a.id AS authority_id,
+		  a.code AS authority_code,
+		  a.name AS authority_name,
+		  a.description AS authority_description,
+		  a.create_time AS authority_create_time,
+		  a.modify_time AS authority_modify_time,
+		  a.order AS authority_order,
+		  
+		  dept.id AS dept_id,
+		  dept.code AS dept_code,
+		  dept.name AS dept_name,
+		  dept.description AS dept_description,
+		  dept.parent_id AS dept_parent_id,
+		  dept.create_time AS dept_create_time,
+		  dept.modify_time AS dept_modify_time,
+		  dept.order AS dept_order
+		  
+		FROM
+		  sys_user u 
+		  LEFT JOIN sys_user_role ur 
+		    ON u.id = ur.user_id 
+		  LEFT JOIN sys_role r 
+		    ON r.id = ur.role_id
+		  LEFT JOIN sys_role_authority ra 
+		    ON ra.role_id = r.id 
+		  LEFT JOIN sys_authority a 
+		    ON ra.authority_id = a.id
+		  LEFT JOIN sys_department dept
+		  	ON dept.id = u.department_id
 	</select>
 	
 	<!--  -->
@@ -406,6 +476,18 @@
 		<if test="ids == null or ids.size == 0">
 			id is null
 		</if>
+		;
+		delete from sys_user_role
+		    where 
+	    <if test="ids != null and ids.size > 0">
+			<foreach collection="ids" item="id" open="user_id in(" close=")" separator=",">
+				#{id,jdbcType=VARCHAR}
+			</foreach>
+		</if>
+		<if test="ids == null or ids.size == 0">
+			user_id is null
+		</if>
+		;
 	</delete>
 	
 	<!--  -->

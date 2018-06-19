@@ -35,17 +35,23 @@
 		<selectKey keyProperty="id" resultType="String" order="BEFORE">
 			select replace(uuid(),'-','') from dual
 		</selectKey>
-		insert into sys_authority (`id`, `code`, `name`,
-		`description, `parent_id`,
-		`order`,
-		`create_time`, `modify_time`)
-		values (#{id,jdbcType=VARCHAR},
-		#{code,jdbcType=VARCHAR},
-		#{name,jdbcType=VARCHAR},
-		#{description,jdbcType=VARCHAR}, #{parent.id,jdbcType=VARCHAR},
-		#{order,jdbcType=INTEGER},
-		#{createTime,jdbcType=TIMESTAMP},
-		#{modifyTime,jdbcType=TIMESTAMP})
+		insert into sys_authority (
+			`id`, 
+			`code`, 
+			`name`,
+			`description, 
+			`parent_id`,
+			`order`,
+			`create_time`, 
+			`modify_time`)
+		values (
+			#{id,jdbcType=VARCHAR},
+			#{code,jdbcType=VARCHAR},
+			#{name,jdbcType=VARCHAR},
+			#{description,jdbcType=VARCHAR}, #{parent.id,jdbcType=VARCHAR},
+			#{order,jdbcType=INTEGER},
+			#{createTime,jdbcType=TIMESTAMP},
+			#{modifyTime,jdbcType=TIMESTAMP});
 	</insert>
 	<insert id="insertSelective" parameterType="cargoes.model.po.Authority">
 		<selectKey keyProperty="id" resultType="String" order="BEFORE">
@@ -134,18 +140,16 @@
 	</update>
 	<update id="updateByPrimaryKey" parameterType="cargoes.model.po.Authority">
 		update sys_authority
-		set `code` = #{code,jdbcType=VARCHAR},
-		`name` =
-		#{name,jdbcType=VARCHAR},
-		`description` =
-		#{description,jdbcType=VARCHAR},
-		`parent_id` =
-		#{parent.id,jdbcType=VARCHAR},
-		`order` = #{order,jdbcType=INTEGER},
-		`create_time` = #{createTime,jdbcType=TIMESTAMP},
-		`modify_time` =
-		#{modifyTime,jdbcType=TIMESTAMP}
-		where id = #{id,jdbcType=VARCHAR}
+			set 
+				`code` = #{code,jdbcType=VARCHAR},
+				`name` = #{name,jdbcType=VARCHAR},
+				`description` = #{description,jdbcType=VARCHAR},
+				`parent_id` = #{parent.id,jdbcType=VARCHAR},
+				`order` = #{order,jdbcType=INTEGER},
+				`create_time` = #{createTime,jdbcType=TIMESTAMP},
+				`modify_time` = #{modifyTime,jdbcType=TIMESTAMP}
+		where 
+			id = #{id,jdbcType=VARCHAR};
 	</update>
 	
 	<!-- -->

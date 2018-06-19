@@ -12,13 +12,23 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+import org.modelmapper.AbstractConverter;
+import org.modelmapper.Converter;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.PropertyMap;
+import org.modelmapper.TypeToken;
+import org.modelmapper.convention.MatchingStrategies;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.alibaba.fastjson.JSON;
 import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 
+import cargoes.model.dto.RoleOutDto;
+import cargoes.model.dto.SysUserOutDto;
 import cargoes.model.po.Department;
 import cargoes.model.po.Role;
 import cargoes.model.po.SysUser;
@@ -27,30 +37,30 @@ import cargoes.model.po.SysUser;
 @SpringBootTest
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class UserServiceTest {
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	public static SysUser user;
-	
+
 	public static Department department;
-	
+
 	public static List<Role> roles;
 
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
 		roles = new ArrayList<Role>();
-		
+
 		Role r1 = new Role();
 		Role r2 = new Role();
 		r1.setId("8a76732dabcb4d428ff16a6b740775a4");
 		r2.setId("9a76732dabcb4d428ff16a6b740775a4");
 		roles.add(r1);
 		roles.add(r2);
-		
+
 		department = new Department();
 		department.setId("6ab2d31a689e11e8b7ed107b44f33502");
-		
+
 		user = new SysUser();
 		user.setCreateTime(new Date());
 		user.setBirthday(new Date());
@@ -68,14 +78,14 @@ public class UserServiceTest {
 		user.setDepartment(department);
 		user.setRoles(roles);
 	}
-	
+
 	@Test
 	public void test001Insert() {
 		int i = userService.insert(user);
 		assertEquals(1, i);
-		
+
 	}
-	
+
 	@Test
 	public void test002UpdateByPrimaryKey() {
 		user.setPassword("112233445566");
@@ -83,10 +93,10 @@ public class UserServiceTest {
 		int i = userService.updateByPrimaryKey(user);
 		assertEquals(1, i);
 	}
-	
+
 	@Test
 	public void test003DeleteByPrimaryKey() {
-		
+
 		int i = userService.deleteByPrimaryKey(user.getId());
 		assertEquals(1, i);
 	}
@@ -114,24 +124,42 @@ public class UserServiceTest {
 
 	@Test
 	public void test007SelectByPrimaryKeys() {
-		
-		List<String> ids = new ArrayList<String>(); 
-		
+
+		List<String> ids = new ArrayList<String>();
+
 		ids.add("1");
 		ids.add("2");
-		
+
 		List<SysUser> users = userService.selectByPrimaryKeys(ids);
 		assertNotNull(users);
 		System.out.println(JSON.toJSONString(users));
 	}
-	
+
 	@Test
 	public void test008GetUsersByPage() {
+
+		ModelMapper modelMapper = new ModelMapper();
+		// 针对内部list的转换
+		Converter<ArrayList<SysUser>, ArrayList<SysUserOutDto>> converter = new AbstractConverter<ArrayList<SysUser>, ArrayList<SysUserOutDto>>() {
+			@Override
+			protected ArrayList<SysUserOutDto> convert(ArrayList<SysUser> source) {
+				return modelMapper.map(source, new TypeToken<ArrayList<SysUserOutDto>>() {}.getType());
+			}
+		};
 		
-		Page<SysUser> page = userService.getUsersByPage(1, 10);
-		assertNotNull(page);
-		System.out.println(JSON.toJSONString(page));
-		
+		PropertyMap<PageInfo<SysUser>, PageInfo<SysUserOutDto>> propertyMap = new PropertyMap<PageInfo<SysUser>, PageInfo<SysUserOutDto>>() {
+			@Override
+			protected void configure() {
+				using(converter).map(source.getList(), destination.getList());
+			}
+		};
+		modelMapper.addMappings(propertyMap);
+
+		PageInfo<SysUser> sourcePage = userService.getUsersByPage(1, 10);
+		assertNotNull(sourcePage);
+
+//		System.out.println(JSON.toJSONString(page));
+
 	}
 
 	@Test
@@ -145,12 +173,12 @@ public class UserServiceTest {
 		int i = userService.updateByPrimaryKey(user);
 		assertEquals(1, i);
 	}
-	
+
 	@Test
 	public void test010DeleteByPrimaryKeys() {
-		
+
 		List<String> ids = new ArrayList<String>();
-		
+
 		ids.add("a59766ac695c11e8b7ed107b44f33502");
 		ids.add("907aaf33695c11e8b7ed107b44f33502");
 		int i = userService.deleteByPrimaryKeys(null);

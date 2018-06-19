@@ -1,9 +1,8 @@
-package cargoes.model.po;
+package cargoes.model.dto;
 
-import java.util.Date;
 import java.util.List;
 
-public class Authority {
+public class AuthorityDto {
 	
     private String id;
 
@@ -15,13 +14,9 @@ public class Authority {
 
     private Integer order;
 
-    private Date createTime;
-
-    private Date modifyTime;
+    private AuthorityDto parent;
     
-    private Authority parent;
-    
-    private List<Authority> children;
+    private List<AuthorityDto> children;
 
 	public String getId() {
 		return id;
@@ -63,35 +58,19 @@ public class Authority {
 		this.order = order;
 	}
 
-	public Date getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
-
-	public Date getModifyTime() {
-		return modifyTime;
-	}
-
-	public void setModifyTime(Date modifyTime) {
-		this.modifyTime = modifyTime;
-	}
-
-	public Authority getParent() {
+	public AuthorityDto getParent() {
 		return parent;
 	}
 
-	public void setParent(Authority parent) {
+	public void setParent(AuthorityDto parent) {
 		this.parent = parent;
 	}
 
-	public List<Authority> getChildren() {
+	public List<AuthorityDto> getChildren() {
 		return children;
 	}
 
-	public void setChildren(List<Authority> children) {
+	public void setChildren(List<AuthorityDto> children) {
 		this.children = children;
 	}
 

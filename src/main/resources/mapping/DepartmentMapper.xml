@@ -2,9 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="cargoes.dao.DepartmentMapper">
 	<resultMap id="BaseResultMap" type="cargoes.model.po.Department">
-		<!--  
-			 
-			 -->
 		<id column="id" property="id" jdbcType="VARCHAR" />
 		<result column="code" property="code" jdbcType="VARCHAR" />
 		<result column="name" property="name" jdbcType="VARCHAR" />
@@ -37,23 +34,35 @@
 		where id = #{id,jdbcType=VARCHAR}
 	</select>
 	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
-		<!--  
-			 
-			 -->
 		delete from sys_department
-		where id = #{id,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=VARCHAR};
+		
+		update sys_department set
+			parent_id = null
+		where parent_id = #{id,jdbcType=VARCHAR};
 	</delete>
 	<insert id="insert" parameterType="cargoes.model.po.Department">
 		<selectKey keyProperty="id" resultType="String" order="BEFORE">
 			select replace(uuid(),'-','') from dual
 		</selectKey>
-		insert into sys_department (`id`, `code`, `name`,
-		`description`, `parent_id`, `order`,
-		`create_time`, `modify_time`)
-		values (#{id,jdbcType=VARCHAR}, #{code,jdbcType=VARCHAR},
-		#{name,jdbcType=VARCHAR},
-		#{description,jdbcType=VARCHAR}, #{parent.id,jdbcType=VARCHAR}, #{order,jdbcType=INTEGER},
-		#{createTime,jdbcType=TIMESTAMP}, #{modifyTime,jdbcType=TIMESTAMP})
+		insert into sys_department (
+			`id`, 
+			`code`, 
+			`name`,
+			`description`, 
+			`parent_id`, 
+			`order`,
+			`create_time`, 
+			`modify_time`)
+		values (
+			#{id,jdbcType=VARCHAR}, 
+			#{code,jdbcType=VARCHAR},
+			#{name,jdbcType=VARCHAR},
+			#{description,jdbcType=VARCHAR}, 
+			#{parent.id,jdbcType=VARCHAR}, 
+			#{order,jdbcType=INTEGER},
+			#{createTime,jdbcType=TIMESTAMP}, 
+			#{modifyTime,jdbcType=TIMESTAMP})
 	</insert>
 	<insert id="insertSelective" parameterType="cargoes.model.po.Department">
 		<selectKey keyProperty="id" resultType="String" order="BEFORE">
@@ -138,18 +147,47 @@
 				`modify_time` = #{modifyTime,jdbcType=TIMESTAMP},
 			</if>
 		</set>
-		where id = #{id,jdbcType=VARCHAR}
+		where id = #{id,jdbcType=VARCHAR};
+		
+		<if test="children != null">
+		    update sys_department set
+				parent_id = null
+			where parent_id = #{id,jdbcType=VARCHAR};
+		    <if test="children.size > 0">
+				<foreach collection="children" item="child">
+					update sys_department set
+						parent_id = #{id,jdbcType=VARCHAR};
+					where id = #{child.id,jdbcType=VARCHAR};
+				</foreach>
+			</if>
+		</if>
 	</update>
+	
 	<update id="updateByPrimaryKey" parameterType="cargoes.model.po.Department">
 		update sys_department
-		set `code` = #{code,jdbcType=VARCHAR},
-		`name` = #{name,jdbcType=VARCHAR},
-		`description` = #{description,jdbcType=VARCHAR},
-		`parent_id` = #{parent.id,jdbcType=VARCHAR},
-		`order` = #{order,jdbcType=INTEGER},
-		`create_time` = #{createTime,jdbcType=TIMESTAMP},
-		`modify_time` = #{modifyTime,jdbcType=TIMESTAMP}
-		where id = #{id,jdbcType=VARCHAR}
+			set 
+				`code` = #{code,jdbcType=VARCHAR},
+				`name` = #{name,jdbcType=VARCHAR},
+				`description` = #{description,jdbcType=VARCHAR},
+				`parent_id` = #{parent.id,jdbcType=VARCHAR},
+				`order` = #{order,jdbcType=INTEGER},
+				`create_time` = #{createTime,jdbcType=TIMESTAMP},
+				`modify_time` = #{modifyTime,jdbcType=TIMESTAMP}
+		where 
+			id = #{id,jdbcType=VARCHAR};
+		
+		update sys_department set
+			parent_id = null
+		where parent_id = #{id,jdbcType=VARCHAR};
+		
+		<if test="children != null and children.size > 0">
+			<foreach collection="children" item="child">
+				update sys_department set
+					parent_id = #{id,jdbcType=VARCHAR};
+				where id = #{child.id,jdbcType=VARCHAR};
+			</foreach>
+		</if>
+		
 	</update>
 	
 	<!-- -->
@@ -180,6 +218,18 @@
 		</if>
 		<if test="ids == null or ids.size == 0">
 			id is null
+		</if>
+		;
+		update sys_department set
+			parent_id = null
+		where 
+		<if test="ids != null and ids.size > 0">
+			<foreach collection="ids" item="id" open="parent_id in(" close=")" separator=",">
+				#{id,jdbcType=VARCHAR}
+			</foreach>
+		</if>
+		<if test="ids == null or ids.size == 0">
+			1=2
 		</if>
 	</delete>
 	

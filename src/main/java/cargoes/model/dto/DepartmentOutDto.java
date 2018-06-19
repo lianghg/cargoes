@@ -1,11 +1,10 @@
-package cargoes.model.po;
+package cargoes.model.dto;
 
-import java.util.Date;
 import java.util.List;
 
-public class Authority {
+public class DepartmentOutDto {
 	
-    private String id;
+	private String id;
 
     private String code;
 
@@ -14,14 +13,10 @@ public class Authority {
     private String description;
 
     private Integer order;
-
-    private Date createTime;
-
-    private Date modifyTime;
     
-    private Authority parent;
+    private DepartmentOutDto parent;
     
-    private List<Authority> children;
+	private List<DepartmentOutDto> children;
 
 	public String getId() {
 		return id;
@@ -63,36 +58,20 @@ public class Authority {
 		this.order = order;
 	}
 
-	public Date getCreateTime() {
-		return createTime;
-	}
-
-	public void setCreateTime(Date createTime) {
-		this.createTime = createTime;
-	}
-
-	public Date getModifyTime() {
-		return modifyTime;
-	}
-
-	public void setModifyTime(Date modifyTime) {
-		this.modifyTime = modifyTime;
-	}
-
-	public Authority getParent() {
+	public DepartmentOutDto getParent() {
 		return parent;
 	}
 
-	public void setParent(Authority parent) {
+	public void setParent(DepartmentOutDto parent) {
 		this.parent = parent;
 	}
 
-	public List<Authority> getChildren() {
+	public List<DepartmentOutDto> getChildren() {
 		return children;
 	}
 
-	public void setChildren(List<Authority> children) {
+	public void setChildren(List<DepartmentOutDto> children) {
 		this.children = children;
 	}
-
+	
 }

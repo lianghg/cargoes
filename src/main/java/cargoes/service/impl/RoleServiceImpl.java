@@ -24,7 +24,7 @@ public class RoleServiceImpl extends AbstractServiceImpl<Role> implements RoleSe
 	@Override
 	public Page<Role> getRolesByPage(int pageNo, int pageSize) {
 		Page<Role> page = PageHelper.startPage(pageNo, pageSize);
-//		this.getMapper().selectByExample(null);
+		this.getMapper().selectList();
 		
 		return page;
 	}
