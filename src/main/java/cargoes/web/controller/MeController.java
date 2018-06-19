@@ -8,12 +8,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import cargoes.model.dto.DataEntity;
-import cargoes.model.dto.MeInDto;
-import cargoes.model.dto.MeOutDto;
+import cargoes.model.dto.MeDto;
 import cargoes.model.po.SysUser;
 import cargoes.service.UserService;
 
@@ -24,34 +22,34 @@ public class MeController {
 	private UserService userService;
 
 	@GetMapping(value = "/me")
-	public ResponseEntity<DataEntity<MeOutDto>> getUser(@PathVariable(name = "id") String id) {
+	public ResponseEntity<DataEntity<MeDto>> getUser(@PathVariable(name = "id") String id) {
 
 		SysUser user = userService.selectByPrimaryKey(id);
 
-		MeOutDto meOutDto = new MeOutDto();
+		MeDto meOutDto = new MeDto();
 		BeanUtils.copyProperties(user, meOutDto);
 		
-		DataEntity<MeOutDto> dataEntity = new DataEntity<MeOutDto>();
+		DataEntity<MeDto> dataEntity = new DataEntity<MeDto>();
 		dataEntity.setFlag(true);
 		dataEntity.setStatus(HttpStatus.OK.value());
 		dataEntity.setMessage("查询成功");
 		dataEntity.setResult(meOutDto);
 
-		return new ResponseEntity<DataEntity<MeOutDto>>(dataEntity, HttpStatus.OK);
+		return new ResponseEntity<DataEntity<MeDto>>(dataEntity, HttpStatus.OK);
 
 	}
 	
 	@SuppressWarnings("rawtypes")
 	@PutMapping(value = "/me")
-	public ResponseEntity<DataEntity> changeInfo(@RequestBody MeInDto meInDto) {
+	public ResponseEntity<DataEntity> changeInfo(SysUser me) {
 
-		SysUser user = userService.selectByPrimaryKey(meInDto.getId());
+		SysUser user = userService.selectByPrimaryKey(me.getId());
 
-		MeOutDto userInfo = new MeOutDto();
+		MeDto userInfo = new MeDto();
 		BeanUtils.copyProperties(userInfo, user);
-		userService.updateByPrimaryKey(user);
+		userService.updateByPrimaryKeySelective(user);
 		
-		DataEntity<MeOutDto> dataEntity = new DataEntity<MeOutDto>();
+		DataEntity<MeDto> dataEntity = new DataEntity<MeDto>();
 		dataEntity.setFlag(true);
 		dataEntity.setStatus(HttpStatus.OK.value());
 		dataEntity.setMessage("更新成功");

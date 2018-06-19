@@ -24,8 +24,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 
 import cargoes.model.dto.DataEntity;
-import cargoes.model.dto.DepartmentInDto;
-import cargoes.model.dto.DepartmentOutDto;
 import cargoes.model.po.Department;
 import cargoes.model.po.SysUser;
 import cargoes.service.DepartmentService;
@@ -46,20 +44,20 @@ public class DepartmentController {
 	 * @return
 	 */
 	@GetMapping(value="/{id}")
-	public ResponseEntity<DataEntity<DepartmentOutDto>> getDepartment(@PathVariable(name="id") String id){
+	public ResponseEntity<DataEntity<Department>> getDepartment(@PathVariable(name="id") String id){
 		
 		Department department = departmentService.selectByPrimaryKey(id);
 		
-		DepartmentOutDto departmentOutDto = new DepartmentOutDto();
+		Department departmentOutDto = new Department();
 		BeanUtils.copyProperties(department, departmentOutDto);
 		
-		DataEntity<DepartmentOutDto> dataEntity = new DataEntity<DepartmentOutDto>();
+		DataEntity<Department> dataEntity = new DataEntity<Department>();
 		dataEntity.setFlag(true);
 		dataEntity.setStatus(HttpStatus.OK.value());
 		dataEntity.setMessage("查询成功");
 		dataEntity.setResult(departmentOutDto);
 		
-		return new ResponseEntity<DataEntity<DepartmentOutDto>>(dataEntity,HttpStatus.OK);
+		return new ResponseEntity<DataEntity<Department>>(dataEntity,HttpStatus.OK);
 		
 	}
 	
@@ -110,12 +108,10 @@ public class DepartmentController {
 	 */
 	@SuppressWarnings("rawtypes")
 	@PutMapping(value="/{id}")
-	public ResponseEntity<DataEntity> updateDepartment(@PathVariable(name="id") String id, DepartmentInDto departmentDto){
+	public ResponseEntity<DataEntity> updateDepartment(@PathVariable(name="id") String id, Department dept, String parentId, List<String> childrenIds){
 		
-		Department parent = departmentService.selectByPrimaryKey(departmentDto.getParentId());
-		List<Department> children = departmentService.selectByPrimaryKeys(departmentDto.getChildrenIds());
-		
-		Department dept = modelMapper.map(departmentDto, Department.class);
+		Department parent = departmentService.selectByPrimaryKey(parentId);
+		List<Department> children = departmentService.selectByPrimaryKeys(childrenIds);
 		
 		Department department = departmentService.selectByPrimaryKey(id);
 		
@@ -145,12 +141,11 @@ public class DepartmentController {
 	 */
 	@SuppressWarnings("rawtypes")
 	@PostMapping(value="/")
-	public ResponseEntity<DataEntity> addDepartment(DepartmentInDto departmentDto){
+	public ResponseEntity<DataEntity> addDepartment(Department department, String parentId, List<String> childrenIds){
 		
-		Department parent = departmentService.selectByPrimaryKey(departmentDto.getParentId());
-		List<Department> children = departmentService.selectByPrimaryKeys(departmentDto.getChildrenIds());
+		Department parent = departmentService.selectByPrimaryKey(parentId);
+		List<Department> children = departmentService.selectByPrimaryKeys(childrenIds);
 		
-		Department department = modelMapper.map(departmentDto, Department.class);
 		department.setCreateTime(new Date());
 		department.setParent(parent);
 		department.setChildren(children);
@@ -173,23 +168,22 @@ public class DepartmentController {
 	 * @return
 	 */
 	@GetMapping(value = "",headers="api-version=1.1")
-	public ResponseEntity<DataEntity<PageInfo<DepartmentOutDto>>> listDepartment(
+	public ResponseEntity<DataEntity<PageInfo<Department>>> listDepartment(
 			@RequestParam(name = "page_no", defaultValue = "1") int pageNo,
 			@RequestParam(name = "page_size", defaultValue = "10") int pageSize) {
 
 		Page<Department> sourcePage = departmentService.getDepartmentsByPage(pageNo, pageSize);
 		
-		Type type = new TypeToken<PageInfo<DepartmentOutDto>>() {}.getType();
-		PageInfo<DepartmentOutDto> pageInfo = modelMapper.map(sourcePage, type);
+		PageInfo<Department> pageInfo = new PageInfo<Department>(sourcePage);
 
 		//
-		DataEntity<PageInfo<DepartmentOutDto>> dataEntity = new DataEntity<PageInfo<DepartmentOutDto>>();
+		DataEntity<PageInfo<Department>> dataEntity = new DataEntity<PageInfo<Department>>();
 		dataEntity.setFlag(true);
 		dataEntity.setMessage("查询成功");
 		dataEntity.setStatus(HttpStatus.OK.value());
 		dataEntity.setResult(pageInfo);
 
-		return new ResponseEntity<DataEntity<PageInfo<DepartmentOutDto>>>(dataEntity, HttpStatus.OK);
+		return new ResponseEntity<DataEntity<PageInfo<Department>>>(dataEntity, HttpStatus.OK);
 
 	}
 }

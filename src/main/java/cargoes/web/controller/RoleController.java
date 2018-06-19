@@ -1,11 +1,9 @@
 package cargoes.web.controller;
 
-import java.lang.reflect.Type;
 import java.util.Date;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
-import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,8 +22,6 @@ import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 
 import cargoes.model.dto.DataEntity;
-import cargoes.model.dto.RoleInDto;
-import cargoes.model.dto.RoleOutDto;
 import cargoes.model.po.Authority;
 import cargoes.model.po.Role;
 import cargoes.model.po.SysUser;
@@ -37,9 +32,6 @@ import cargoes.service.RoleService;
 @RequestMapping("/roles")
 public class RoleController {
 	
-	@Autowired
-	private ModelMapper modelMapper;
-
 	@Autowired
 	private RoleService roleService;
 	
@@ -53,19 +45,17 @@ public class RoleController {
 	 * @return
 	 */
 	@GetMapping(value="/{id}")
-	public ResponseEntity<DataEntity<RoleOutDto>> getRole(@PathVariable(name="id") String id){
+	public ResponseEntity<DataEntity<Role>> getRole(@PathVariable(name="id") String id){
 		
 		Role role = roleService.selectByPrimaryKey(id);
 		
-		RoleOutDto roleOutDto = modelMapper.map(role, RoleOutDto.class);
-		
-		DataEntity<RoleOutDto> dataEntity = new DataEntity<RoleOutDto>();
+		DataEntity<Role> dataEntity = new DataEntity<Role>();
 		dataEntity.setFlag(true);
 		dataEntity.setStatus(HttpStatus.OK.value());
 		dataEntity.setMessage("查询成功");
-		dataEntity.setResult(roleOutDto);
+		dataEntity.setResult(role);
 		
-		return new ResponseEntity<DataEntity<RoleOutDto>>(dataEntity,HttpStatus.OK);
+		return new ResponseEntity<DataEntity<Role>>(dataEntity,HttpStatus.OK);
 		
 	}
 	
@@ -96,7 +86,7 @@ public class RoleController {
 	 */
 	@SuppressWarnings("rawtypes")
 	@DeleteMapping(value="", consumes=MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<DataEntity> deleteRoles(@RequestBody List<String> ids){
+	public ResponseEntity<DataEntity> deleteRoles(@RequestParam("ids[]") List<String> ids){
 		
 		roleService.deleteByPrimaryKeys(ids);
 		
@@ -116,18 +106,17 @@ public class RoleController {
 	 */
 	@SuppressWarnings("rawtypes")
 	@PutMapping(value="/{id}")
-	public ResponseEntity<DataEntity> updateRole(@PathVariable(name="id") String id, RoleInDto roleDto){
+	public ResponseEntity<DataEntity> updateRole(@PathVariable(name="id") String id, Role roleDto, List<String> authorityIds){
 		
-		List<Authority> authorities = authorityService.selectByPrimaryKeys(roleDto.getAuthorityIds());
+		List<Authority> authorities = authorityService.selectByPrimaryKeys(authorityIds);
 		
 		Role role = roleService.selectByPrimaryKey(id);
 		
-		Role r = modelMapper.map(roleDto, Role.class);
 		role.setModifyTime(new Date());
-		role.setCode(r.getCode());
-		role.setName(r.getName());
-		role.setOrder(r.getOrder());
-		role.setStatus(r.getStatus());
+		role.setCode(roleDto.getCode());
+		role.setName(roleDto.getName());
+		role.setOrder(roleDto.getOrder());
+		role.setStatus(roleDto.getStatus());
 		role.setAuthorities(authorities);
 		
 		roleService.updateByPrimaryKey(role);
@@ -149,18 +138,17 @@ public class RoleController {
 	 */
 	@SuppressWarnings("rawtypes")
 	@PatchMapping(value="/{id}")
-	public ResponseEntity<DataEntity> updateRoleSelective(@PathVariable(name="id") String id, @RequestBody RoleInDto roleDto){
+	public ResponseEntity<DataEntity> updateRoleSelective(@PathVariable(name="id") String id, Role roleDto, List<String> authorityIds){
 		
-		List<Authority> authorities = authorityService.selectByPrimaryKeys(roleDto.getAuthorityIds());
+		List<Authority> authorities = authorityService.selectByPrimaryKeys(authorityIds);
 		
 		Role role = roleService.selectByPrimaryKey(id);
 		
-		Role r = modelMapper.map(roleDto, Role.class);
 		role.setModifyTime(new Date());
-		role.setCode(r.getCode());
-		role.setName(r.getName());
-		role.setOrder(r.getOrder());
-		role.setStatus(r.getStatus());
+		role.setCode(roleDto.getCode());
+		role.setName(roleDto.getName());
+		role.setOrder(roleDto.getOrder());
+		role.setStatus(roleDto.getStatus());
 		role.setAuthorities(authorities);
 		
 		roleService.updateByPrimaryKeySelective(role);
@@ -176,16 +164,15 @@ public class RoleController {
 	
 	/**
 	 * 新增角色
-	 * @param tempUser
+	 * @param role
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
 	@PostMapping(value="/")
-	public ResponseEntity<DataEntity> addRoleSelective(@RequestBody RoleInDto roleDto){
+	public ResponseEntity<DataEntity> addRoleSelective(Role role, List<String> authorityIds){
 		
-		List<Authority> authorities = authorityService.selectByPrimaryKeys(roleDto.getAuthorityIds());
+		List<Authority> authorities = authorityService.selectByPrimaryKeys(authorityIds);
 		
-		Role role = modelMapper.map(roleDto, Role.class);
 		role.setCreateTime(new Date());
 		role.setAuthorities(authorities);
 		
@@ -207,23 +194,21 @@ public class RoleController {
 	 * @return
 	 */
 	@GetMapping(value = "",headers="api-version=1.1")
-	public ResponseEntity<DataEntity<PageInfo<RoleOutDto>>> listRole(
+	public ResponseEntity<DataEntity<PageInfo<Role>>> listRole(
 			@RequestParam(name = "page_no", defaultValue = "1") int pageNo,
 			@RequestParam(name = "page_size", defaultValue = "10") int pageSize) {
 
 		Page<Role> sourcePage = roleService.getRolesByPage(pageNo, pageSize);
 		
-		Type type = new TypeToken<PageInfo<RoleOutDto>>() {}.getType();
-		PageInfo<RoleOutDto> pageInfo = modelMapper.map(sourcePage, type);
-		
+		PageInfo<Role> pageInfo = new PageInfo<Role>(sourcePage);
 		//
-		DataEntity<PageInfo<RoleOutDto>> dataEntity = new DataEntity<PageInfo<RoleOutDto>>();
+		DataEntity<PageInfo<Role>> dataEntity = new DataEntity<PageInfo<Role>>();
 		dataEntity.setFlag(true);
 		dataEntity.setMessage("查询成功");
 		dataEntity.setStatus(HttpStatus.OK.value());
 		dataEntity.setResult(pageInfo);
 
-		return new ResponseEntity<DataEntity<PageInfo<RoleOutDto>>>(dataEntity, HttpStatus.OK);
+		return new ResponseEntity<DataEntity<PageInfo<Role>>>(dataEntity, HttpStatus.OK);
 
 	}
 		

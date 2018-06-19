@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,8 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.github.pagehelper.PageInfo;
 
 import cargoes.model.dto.DataEntity;
-import cargoes.model.dto.SysUserInDto;
-import cargoes.model.dto.SysUserOutDto;
+import cargoes.model.dto.SysUserDto;
 import cargoes.model.po.Department;
 import cargoes.model.po.Role;
 import cargoes.model.po.SysUser;
@@ -54,19 +52,19 @@ public class UserController {
 	 * @return
 	 */
 	@GetMapping(value = "/{id}")
-	public ResponseEntity<DataEntity<SysUserOutDto>> getUser(@PathVariable(name = "id") String id) {
+	public ResponseEntity<DataEntity<SysUserDto>> getUser(@PathVariable(name = "id") String id) {
 
 		SysUser user = userService.selectByPrimaryKey(id);
 
-		SysUserOutDto sysUserDto = modelMapper.map(user, SysUserOutDto.class);
+		SysUserDto sysUserDto = modelMapper.map(user, SysUserDto.class);
 
-		DataEntity<SysUserOutDto> dataEntity = new DataEntity<SysUserOutDto>();
+		DataEntity<SysUserDto> dataEntity = new DataEntity<SysUserDto>();
 		dataEntity.setFlag(true);
 		dataEntity.setStatus(HttpStatus.OK.value());
 		dataEntity.setMessage("查询成功");
 		dataEntity.setResult(sysUserDto);
 
-		return new ResponseEntity<DataEntity<SysUserOutDto>>(dataEntity, HttpStatus.OK);
+		return new ResponseEntity<DataEntity<SysUserDto>>(dataEntity, HttpStatus.OK);
 
 	}
 
@@ -120,10 +118,10 @@ public class UserController {
 	 */
 	@SuppressWarnings("rawtypes")
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<DataEntity> updateUser(@PathVariable(name = "id") String id,  SysUserInDto userDto) {
+	public ResponseEntity<DataEntity> updateUser(@PathVariable(name = "id") String id, SysUserDto userDto,  String departmentId, List<String> roleIds) {
 		
-		List<Role> role = roleService.selectByPrimaryKeys(userDto.getRoleIds());
-		Department department = departmentService.selectByPrimaryKey(userDto.getDepartmentId());
+		List<Role> role = roleService.selectByPrimaryKeys(roleIds);
+		Department department = departmentService.selectByPrimaryKey(departmentId);
 
 		SysUser user = userService.selectByPrimaryKey(id);
 		SysUser u = modelMapper.map(userDto, SysUser.class);
@@ -156,11 +154,11 @@ public class UserController {
 	 * @return
 	 */
 	@SuppressWarnings("rawtypes")
-	@PostMapping(value = "/")
-	public ResponseEntity<DataEntity> addUser(SysUserInDto userDto) {
+	@PostMapping(value = "")
+	public ResponseEntity<DataEntity> addUser(SysUserDto userDto,  String departmentId, List<String> roleIds) {
 
-		List<Role> role = roleService.selectByPrimaryKeys(userDto.getRoleIds());
-		Department department = departmentService.selectByPrimaryKey(userDto.getDepartmentId());
+		Department department = departmentService.selectByPrimaryKey(departmentId);
+		List<Role> role = roleService.selectByPrimaryKeys(roleIds);
 		
 		SysUser user = modelMapper.map(userDto, SysUser.class);
 		user.setCreateTime(new Date());
@@ -190,21 +188,21 @@ public class UserController {
 	 * @return
 	 */
 	@GetMapping(value = "", headers = "api-version=1.1")
-	public ResponseEntity<DataEntity<PageInfo<SysUserOutDto>>> listUser(
+	public ResponseEntity<DataEntity<PageInfo<SysUserDto>>> listUser(
 			@RequestParam(name = "page_no", defaultValue = "1") int pageNo,
 			@RequestParam(name = "page_size", defaultValue = "10") int pageSize) {
 
 		PageInfo<SysUser> sourcePage = userService.getUsersByPage(pageNo, pageSize);
-		Type type = new TypeToken<PageInfo<SysUserOutDto>>() {}.getType();
-		PageInfo<SysUserOutDto> pageInfo = modelMapper.map(sourcePage, type);
+		Type type = new TypeToken<PageInfo<SysUserDto>>() {}.getType();
+		PageInfo<SysUserDto> pageInfo = modelMapper.map(sourcePage, type);
 		//
-		DataEntity<PageInfo<SysUserOutDto>> dataEntity = new DataEntity<PageInfo<SysUserOutDto>>();
+		DataEntity<PageInfo<SysUserDto>> dataEntity = new DataEntity<PageInfo<SysUserDto>>();
 		dataEntity.setFlag(true);
 		dataEntity.setMessage("查询成功");
 		dataEntity.setStatus(HttpStatus.OK.value());
 		dataEntity.setResult(pageInfo);
 
-		return new ResponseEntity<DataEntity<PageInfo<SysUserOutDto>>>(dataEntity, HttpStatus.OK);
+		return new ResponseEntity<DataEntity<PageInfo<SysUserDto>>>(dataEntity, HttpStatus.OK);
 	}
 
 	@SuppressWarnings("rawtypes")

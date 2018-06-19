@@ -17,18 +17,14 @@ import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
 import org.modelmapper.TypeToken;
-import org.modelmapper.convention.MatchingStrategies;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.alibaba.fastjson.JSON;
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageInfo;
 
-import cargoes.model.dto.RoleOutDto;
-import cargoes.model.dto.SysUserOutDto;
+import cargoes.model.dto.SysUserDto;
 import cargoes.model.po.Department;
 import cargoes.model.po.Role;
 import cargoes.model.po.SysUser;
@@ -140,14 +136,14 @@ public class UserServiceTest {
 
 		ModelMapper modelMapper = new ModelMapper();
 		// 针对内部list的转换
-		Converter<ArrayList<SysUser>, ArrayList<SysUserOutDto>> converter = new AbstractConverter<ArrayList<SysUser>, ArrayList<SysUserOutDto>>() {
+		Converter<ArrayList<SysUser>, ArrayList<SysUserDto>> converter = new AbstractConverter<ArrayList<SysUser>, ArrayList<SysUserDto>>() {
 			@Override
-			protected ArrayList<SysUserOutDto> convert(ArrayList<SysUser> source) {
-				return modelMapper.map(source, new TypeToken<ArrayList<SysUserOutDto>>() {}.getType());
+			protected ArrayList<SysUserDto> convert(ArrayList<SysUser> source) {
+				return modelMapper.map(source, new TypeToken<ArrayList<SysUserDto>>() {}.getType());
 			}
 		};
 		
-		PropertyMap<PageInfo<SysUser>, PageInfo<SysUserOutDto>> propertyMap = new PropertyMap<PageInfo<SysUser>, PageInfo<SysUserOutDto>>() {
+		PropertyMap<PageInfo<SysUser>, PageInfo<SysUserDto>> propertyMap = new PropertyMap<PageInfo<SysUser>, PageInfo<SysUserDto>>() {
 			@Override
 			protected void configure() {
 				using(converter).map(source.getList(), destination.getList());

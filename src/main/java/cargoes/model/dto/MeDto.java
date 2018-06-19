@@ -1,8 +1,12 @@
 package cargoes.model.dto;
 
 import java.util.Date;
+import java.util.List;
 
-public class MeInDto {
+import cargoes.model.po.Department;
+import cargoes.model.po.Role;
+
+public class MeDto {
 	
 	private String id;
 
@@ -17,6 +21,10 @@ public class MeInDto {
 	private String email;
 
 	private Date birthday;
+
+	private Department department;
+
+	private List<Role> roles;
 
 	public String getId() {
 		return id;
@@ -74,4 +82,21 @@ public class MeInDto {
 		this.birthday = birthday;
 	}
 
+	public Department getDepartment() {
+		return department;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
+	}
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+
+	
 }

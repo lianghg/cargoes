@@ -200,4 +200,16 @@
 		from sys_authority
 		where id = #{id,jdbcType=VARCHAR}
 	</select>
+	
+	<!--  -->
+	<select id="selectByRoleId" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		a.`id`, a.`code`, a.`name`, a.`description`, a.`parent_id`, a.`order`, a.`create_time`,
+		a.`modify_time
+		FROM
+		  sys_authority a 
+		  INNER JOIN `sys_role_authority` ra 
+		    ON a.`id` = ra.`authority_id` 
+		WHERE ra.`role_id` = #{id,jdbcType=VARCHAR}
+	</select>
 </mapper>

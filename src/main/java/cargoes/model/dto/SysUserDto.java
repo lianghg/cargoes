@@ -3,7 +3,10 @@ package cargoes.model.dto;
 import java.util.Date;
 import java.util.List;
 
-public class SysUserOutDto {
+import cargoes.model.po.Department;
+import cargoes.model.po.Role;
+
+public class SysUserDto {
 
 	private String id;
 
@@ -29,9 +32,9 @@ public class SysUserOutDto {
 
 	private Integer credentialsExpired;
 
-	private DepartmentOutDto department;
+	private Department department;
 
-	private List<RoleOutDto> roles;
+	private List<Role> roles;
 
 	public String getId() {
 		return id;
@@ -129,21 +132,20 @@ public class SysUserOutDto {
 		this.credentialsExpired = credentialsExpired;
 	}
 
-	public DepartmentOutDto getDepartment() {
+	public Department getDepartment() {
 		return department;
 	}
 
-	public void setDepartment(DepartmentOutDto department) {
+	public void setDepartment(Department department) {
 		this.department = department;
 	}
 
-	public List<RoleOutDto> getRoles() {
+	public List<Role> getRoles() {
 		return roles;
 	}
 
-	public void setRoles(List<RoleOutDto> roles) {
+	public void setRoles(List<Role> roles) {
 		this.roles = roles;
 	}
-	
 
 }

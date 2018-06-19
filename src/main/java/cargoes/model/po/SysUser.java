@@ -42,7 +42,7 @@ public class SysUser {
 
 	private List<Role> roles = new ArrayList<Role>();
 
-	private List<String> authorities = new ArrayList<String>();
+	private List<String> authorities;
 
 	public String getId() {
 		return id;

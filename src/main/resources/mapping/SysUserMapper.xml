@@ -42,6 +42,13 @@
   	<collection property="department" column="department_id" select="cargoes.dao.DepartmentMapper.selectByPrimaryKey"></collection>
   </resultMap>
   
+  <resultMap id="PageResultMap" type="cargoes.model.po.SysUser" extends="BaseResultMap">
+  	<collection property="roles" column="id" select="cargoes.dao.RoleMapper.selectByUserId">
+	    <collection property="authorities" column="id" select="cargoes.dao.AuthorityMapper.selectByRoleId"></collection>
+  	</collection>
+  	<collection property="department" column="department_id" select="cargoes.dao.DepartmentMapper.selectByPrimaryKey"></collection>
+  </resultMap>
+  
 	<sql id="Base_Column_List">
 	`id`, `name`, `username`, `password`, `gender`, `phone`, `email`, `birthday`, `department_id`, `create_time`, 
 	`modify_time`, `salt`, `last_change_password`, `status`, `expired`, `locked`, `credentials_expired`
@@ -405,8 +412,8 @@
 	</select>
 
 	<!-- -->
-	<select id="selectList" resultMap="AuthoritiesResultMap">
-		SELECT 
+	<select id="selectList" resultMap="PageResultMap">
+		SELECT DISTINCT
 		  u.id,
 		  u.name,
 		  u.username,
@@ -421,34 +428,7 @@
 		  u.last_change_password,
 		  u.expired,
 		  u.locked, 
-		  u.credentials_expired,
-		  u.password,
-		  u.salt,
-		  
-		  r.id AS role_id,
-		  r.code AS role_code,
-		  r.name AS role_name,
-		  r.modify_time AS role_modify_time,
-		  r.create_time AS role_create_time,
-		  r.description AS role_description,
-		  r.order AS role_order,
-		  
-		  a.id AS authority_id,
-		  a.code AS authority_code,
-		  a.name AS authority_name,
-		  a.description AS authority_description,
-		  a.create_time AS authority_create_time,
-		  a.modify_time AS authority_modify_time,
-		  a.order AS authority_order,
-		  
-		  dept.id AS dept_id,
-		  dept.code AS dept_code,
-		  dept.name AS dept_name,
-		  dept.description AS dept_description,
-		  dept.parent_id AS dept_parent_id,
-		  dept.create_time AS dept_create_time,
-		  dept.modify_time AS dept_modify_time,
-		  dept.order AS dept_order
+		  u.credentials_expired
 		  
 		FROM
 		  sys_user u 
