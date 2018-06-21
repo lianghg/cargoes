@@ -40,7 +40,6 @@
 			<artifactId>druid-spring-boot-starter</artifactId>
 			<version>1.1.9</version>
 		</dependency>
-
 		<!-- mybatis starter -->
 		<dependency>
 			<groupId>org.mybatis.spring.boot</groupId>
@@ -64,6 +63,31 @@
 			<groupId>org.modelmapper</groupId>
 			<artifactId>modelmapper</artifactId>
 			<version>2.0.0</version>
+		</dependency>
+		<!-- security -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.thymeleaf.extras</groupId>
+			<artifactId>thymeleaf-extras-springsecurity4</artifactId>
+		</dependency>
+		<!-- aop -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-aop</artifactId>
+		</dependency>
+		<!-- thymeleaf -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		<!-- 验证码 -->
+		<dependency>
+			<groupId>com.github.axet</groupId>
+			<artifactId>kaptcha</artifactId>
+			<version>0.0.9</version>
 		</dependency>
 
 		<!-- 开发工具 -->
