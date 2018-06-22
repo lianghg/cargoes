@@ -1,4 +1,4 @@
-package cargoes.web.configuration.mvc;
+package cargoes.web.mvc;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
-import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter4;
 import com.alibaba.fastjson.util.IOUtils;
@@ -81,7 +80,6 @@ public class MvcConfiguration extends WebMvcConfigurerAdapter {
 		FastJsonConfig fastJsonConfig = new FastJsonConfig();
 		fastJsonConfig.setDateFormat("yyyy-MM-dd HH:mm:ss");
 		fastJsonConfig.setCharset(IOUtils.UTF8);
-		fastJsonConfig.setSerializerFeatures(SerializerFeature.DisableCircularReferenceDetect);
 
 		List<MediaType> supportedMediaTypes = new ArrayList<MediaType>();
 		supportedMediaTypes.add(MediaType.APPLICATION_JSON_UTF8);

@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>Insert title here</title>
+<script th:replace="base :: common_script"></script>
+<script th:inline="javascript">
+	/* th:inline is very important */
+	$(function() {
+		console.log("this is a home page.");
+	});
+</script>
+</head>
+<body>
+
+	<span id="spanth" th:text="#{r.home.say-hello(${username})}"></span>
+	<span>
+		<a th:href="@{/changeLanauage?lang=zh_CN}">简体中文</a>
+		<b>|</b>
+		<a th:href="@{/changeLanauage?lang=en_US}">english</a>
+	</span>
+	<ul>
+		<li><a th:href="@{druid/index}" th:text="#{r.home.druid-monitor}">druid监控台</a></li>
+		<li><a th:href="@{swagger-ui.html}" th:text="#{r.home.api-doc}">api文档</a></li>
+		<li><a th:href="@{/users/{id}(id=1)}" th:text="#{r.home.slt-user}">查询用户(id=1)</a></li>
+		
+
+		<li>
+			<form id="ff2" th:action="@{/logout}" method="post">
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+				<input type="submit" th:value="#{r.home.sign-out}" />
+			</form>
+		</li>
+	</ul>
+</body>
+</html>

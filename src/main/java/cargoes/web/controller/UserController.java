@@ -28,6 +28,7 @@ import cargoes.model.po.SysUser;
 import cargoes.service.DepartmentService;
 import cargoes.service.RoleService;
 import cargoes.service.UserService;
+import cargoes.util.MessageSourceUtils;
 
 @RestController
 @RequestMapping("/users")
@@ -63,6 +64,7 @@ public class UserController {
 		dataEntity.setStatus(HttpStatus.OK.value());
 		dataEntity.setMessage("查询成功");
 		dataEntity.setResult(sysUserDto);
+//		dataEntity.setMessage(MessageSourceUtils.getMessage("msg.common.query-success"));
 
 		return new ResponseEntity<DataEntity<SysUserDto>>(dataEntity, HttpStatus.OK);
 

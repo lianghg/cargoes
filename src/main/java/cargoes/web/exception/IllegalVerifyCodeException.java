@@ -3,12 +3,12 @@ package cargoes.web.exception;
 import org.springframework.security.core.AuthenticationException;
 
 @SuppressWarnings("serial")
-public class VerifyCodeException extends AuthenticationException {
-		public VerifyCodeException(String msg) {
+public class IllegalVerifyCodeException extends AuthenticationException {
+		public IllegalVerifyCodeException(String msg) {
 			super(msg);
 		}
 
-		public VerifyCodeException(String msg, Throwable t) {
+		public IllegalVerifyCodeException(String msg, Throwable t) {
 			super(msg, t);
 		}
 	}

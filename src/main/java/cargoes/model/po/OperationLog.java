@@ -3,6 +3,10 @@ package cargoes.model.po;
 import java.util.Date;
 
 public class OperationLog {
+	
+	public static int OPERATION_STATUS_SUCCESS = 1;
+	public static int  OPERATION_STATUS_FAIL = 0;
+	
 	private String id;
 
 	private String username;

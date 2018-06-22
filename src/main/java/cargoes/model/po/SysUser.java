@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class SysUser {
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+public class SysUser  implements UserDetails {
 
 	private String id;
 
@@ -42,7 +45,7 @@ public class SysUser {
 
 	private List<Role> roles = new ArrayList<Role>();
 
-	private List<String> authorities;
+	private List<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>(0);
 
 	public String getId() {
 		return id;
@@ -188,12 +191,36 @@ public class SysUser {
 		this.roles = roles;
 	}
 
-	public List<String> getAuthorities() {
+	public List<SimpleGrantedAuthority> getAuthorities() {
 		return authorities;
 	}
 
-	public void setAuthorities(List<String> authorities) {
+	public void setAuthorities(List<SimpleGrantedAuthority> authorities) {
 		this.authorities = authorities;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return true;
 	}
 
 }
